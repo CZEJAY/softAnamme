@@ -8,7 +8,7 @@ import bcrypt from "bcrypt"
 export async function POST (req: NextRequest) {
     try {
         const body = await req.json()
-        console.log(body)
+        // console.log(body)
         const { username, name, email, password, city, DOB } = body
         const exist = await prismadb.user.findUnique({
             //@ts-ignore
@@ -23,7 +23,9 @@ export async function POST (req: NextRequest) {
             }, {status: 400})
         }
 
-        const hashedpassword = bcrypt.hash(password, 10)
+        const hashedpassword = await bcrypt.hash(password, 10)
+        console.log(hashedpassword);
+        
         const user = await prismadb.user.create({
             //@ts-ignore
             data: {
@@ -36,10 +38,13 @@ export async function POST (req: NextRequest) {
         })
         if(user) {
             return NextResponse.json({
-                message: "User Created Success"
+                message: "User Created Success",
+                user
             }, {status: 200})
         }
     } catch (error) {
+        console.log(error);
+        
         return NextResponse.json({
             message: "Error"
         }, { status: 500})

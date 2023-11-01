@@ -16,6 +16,7 @@ import { userLoginSchema } from "@/lib/validations"
 import { zodResolver } from "@hookform/resolvers/zod"
 import axios from "axios"
 import { signIn } from "next-auth/react"
+import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
@@ -24,6 +25,7 @@ import { z } from "zod"
 
 
 const page = () => {
+  const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
   const form = useForm<z.infer<typeof userLoginSchema>>({
     resolver: zodResolver(userLoginSchema),
@@ -39,14 +41,14 @@ const page = () => {
       await signIn("credentials", { ...values, redirect: false })
         .then((callback) => {
           if (callback?.error) {
-            // toast.error(callback?.error)
-            console.log(callback.error);
+            toast.error(callback?.error)
+            // console.log(callback.error);
             
           }
           if (callback?.ok && !callback.error) {
             toast.success("User Logged In Successfully")
             // reset()
-
+            router.push("/")
           }
         }
         ).finally(() => setIsLoading(false))
@@ -95,7 +97,7 @@ const page = () => {
               )}
             />
             <div className="flex items-center flex-col justify-between">
-              <Button disabled={isLoading} type="submit" className={`disabled:cursor-not-allowed mt-4 community-card_btn !text-base-semibold hover:opacity-80`}>{isLoading ? <FaSpinner className={`${isLoading ? "animate-spin" : ""}`} /> : "Submit"} </Button>
+              <Button disabled={isLoading} type="submit" className={`${isLoading ? "opacity-50 cursor-not-allowed" : ""} mt-4 community-card_btn !text-base-semibold hover:opacity-80`}>{isLoading ? <FaSpinner className={`${isLoading ? "animate-spin" : ""}`} /> : "Submit"} </Button>
               <div className="flex gap-2 items-center">
                 <p>Don't have an account?</p>
                 <a href="/sign-up" className='text-small-medium hover:opacity-80 transition-all duration-300 hover:underline'>Sign up</a>

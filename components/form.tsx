@@ -41,11 +41,11 @@ export function FormLocal() {
     // 2. Define a submit handler.
     async function onSubmit(values: z.infer<typeof userSchema>) {
         setIsLoading(true)
-        console.log(values)
+        // console.log(values)
         try {
             await axios.post("/api/register", values)
             .then((res) => {
-                
+                router.push("/sign-in")
             })
             .catch((err) => {
                 // toast({
