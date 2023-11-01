@@ -5,12 +5,14 @@ import { Inter } from 'next/font/google'
 import LeftSideBar from '@/components/LeftSideBar'
 import RightSideBar from '@/components/RightSideBar'
 import Bottombar from '@/components/Bottombar'
+import { ThemeProvider } from '@/components/providers/Theme-provider'
+import { AuthContex } from '@/components/providers/SessionProvider'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Anamme',
-  description: 'Anamme is a software company',
+  title: 'Birthmate',
+  description: 'Birthmate is a software company',
 }
 
 export default function RootLayout({
@@ -19,22 +21,30 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        <Topbar />
+        <AuthContex>
+          <ThemeProvider
+            attribute='class'
+            defaultTheme='system'
+            enableSystem
+            disableTransitionOnChange
+          >
+            <Topbar />
 
-        <main className="flex flex-row">
-          <LeftSideBar />
-          <section className="main-container">
-            <div className="w-full max-w-4xl">
-              {children}
-            </div>
-          </section>
-          {/* @ts-ignore */}
-          <RightSideBar />
-        </main>
+            <main className="flex flex-row">
+              <LeftSideBar />
+              <section className="main-container">
+                <div className="w-full max-w-4xl">
+                  {children}
+                </div>
+              </section>
+              <RightSideBar />
+            </main>
 
-        <Bottombar />
+            <Bottombar />
+          </ThemeProvider>
+        </AuthContex>
       </body>
     </html>
   )

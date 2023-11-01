@@ -4,6 +4,8 @@ import { sidebarLinks } from "@/constants";
 import { usePathname, useRouter }  from "next/navigation"
 import Link from "next/link"
 import Image from "next/image";
+import { Command } from "./ui/command";
+import SideBarDModal from "./commanModal";
 
 const LeftSideBar = () => {
   const router = useRouter()
