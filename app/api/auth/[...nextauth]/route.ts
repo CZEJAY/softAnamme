@@ -30,7 +30,7 @@ export const authOptions: NextAuthOptions = {
             async authorize(credentials){
                 const user = await prismadb.user.findUnique({
                     //@ts-ignore
-                    where: {
+                    where: { 
                         email: credentials?.email
                     }
                 })
